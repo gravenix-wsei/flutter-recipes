@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:recipes/model/Meal.dart';
 import 'package:recipes/api/Urls.dart';
 import 'package:http/http.dart' as http;
+import 'package:recipes/view/RecipeDetails.dart';
 
 void main() {
   runApp(const MyApp());
@@ -93,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       return ListTile(
                         leading: Image.network(meal.thumbnail),
                         title: Text(meal.name),
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RecipeDetails(meal))),
                       );
                     }).toList(),
                   );
