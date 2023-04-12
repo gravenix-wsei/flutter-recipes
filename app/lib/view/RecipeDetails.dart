@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:recipes/model/Meal.dart';
 
@@ -13,35 +15,33 @@ class RecipeDetails extends StatelessWidget {
         Column(
           children: <Widget>[
             Container(
+              padding: const EdgeInsets.only(right: 16, top: 8),
+              alignment: Alignment.centerRight,
+              width: MediaQuery.of(context).size.width,
+              child: Text("Category: ${meal.category}",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+            Container(
               padding: EdgeInsets.all(16),
-              height: MediaQuery.of(context).size.width * 0.6,
+              width: MediaQuery.of(context).size.width,
               child: Image.network(meal.thumbnail, fit: BoxFit.contain)
             ),
           ]
         ),
-        Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(top: 16),
-              child: Text("Name: ${meal.name}")
-            ),
-            Container(
-              padding: const EdgeInsets.only(top: 16),
-              child: Text("Category: ${meal.category}")
-            )
-          ]
-        )
       ],
     );
     Widget ingredients = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Column>[
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: meal.measures.map(
-            (String measure) => Container(
-              margin: EdgeInsets.only(left: 32),
-              child: Text(measure)
-            )
+            (String measure) => Text(measure)
           ).toList(),
         ),
         Column(
@@ -63,10 +63,28 @@ class RecipeDetails extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           recipeInformationWithPicture,
-          ingredients,
+          Center(
+            child: Text('Ingredients'.toUpperCase(),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 4,
+              ),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(width: 1.0, color: const Color(0xcccccccc)),
+            ),
+            margin: EdgeInsets.all(16),
+            padding: EdgeInsets.all(8),
+            child: ingredients,
+          ),
           Container(
             padding: EdgeInsets.all(16),
-            child: Text(meal.instructions),
+            child: Text(meal.instructions, 
+              textAlign: TextAlign.justify,
+            ),
           ),
         ]
       ),

@@ -70,6 +70,18 @@ class _MyHomePageState extends State<MyHomePage> {
       throw Exception('Failed to load recipies');
     }
   }
+
+  ListView generateListView(AsyncSnapshot<List<Meal>> snapshot) {
+    return ListView(
+      children: snapshot.data!.map((meal) {
+        return ListTile(
+          leading: Image.network(meal.thumbnail),
+          title: Text(meal.name),
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RecipeDetails(meal))),
+        );
+      }).toList(),
+    );
+  }
   
   @override
   void initState() {
@@ -89,20 +101,12 @@ class _MyHomePageState extends State<MyHomePage> {
               future: meals,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return ListView(
-                    children: snapshot.data!.map((meal) {
-                      return ListTile(
-                        leading: Image.network(meal.thumbnail),
-                        title: Text(meal.name),
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RecipeDetails(meal))),
-                      );
-                    }).toList(),
-                  );
+                  return generateListView(snapshot);
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
 
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               },
             )
     );
