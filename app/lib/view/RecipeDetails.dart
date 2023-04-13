@@ -35,6 +35,26 @@ class RecipeDetails extends StatelessWidget {
         ),
       ],
     );
+    Widget addToFavouritesButton = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).primaryColor),
+            borderRadius: BorderRadius.all(Radius.circular(32)),
+          ),
+          child: TextButton(
+            onPressed: () => {}, // TODO: add behaviour
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.favorite_outline), // TODO: potential for animation
+                Text('Add to favourites'),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
     Widget ingredients = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Column>[
@@ -63,6 +83,7 @@ class RecipeDetails extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           recipeInformationWithPicture,
+          addToFavouritesButton,
           Center(
             child: Text('Ingredients'.toUpperCase(),
               style: TextStyle(

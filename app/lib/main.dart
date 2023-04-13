@@ -5,6 +5,7 @@ import 'package:recipes/model/Meal.dart';
 import 'package:recipes/api/Urls.dart';
 import 'package:http/http.dart' as http;
 import 'package:recipes/view/RecipeDetails.dart';
+import 'package:recipes/widget/MainMenu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -97,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
+      drawer: MainMenu(),
       body: FutureBuilder<List<Meal>>(
               future: meals,
               builder: (context, snapshot) {
@@ -106,7 +108,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   return Text('${snapshot.error}');
                 }
 
-                return const Center(child: CircularProgressIndicator());
+                return Container(
+                  alignment: Alignment.center,
+                  child: Center(child: CircularProgressIndicator()),
+                );
               },
             )
     );
