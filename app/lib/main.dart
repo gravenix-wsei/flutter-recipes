@@ -1,11 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:recipes/model/Meal.dart';
 import 'package:recipes/api/Urls.dart';
 import 'package:http/http.dart' as http;
 import 'package:recipes/view/RecipeDetails.dart';
 import 'package:recipes/widget/MainMenu.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,15 +39,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -56,6 +47,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late Future<List<Meal>> meals;
+  late SharedPreferences preferences;
 
   Future<List<Meal>> fetchMeals() async {
     final response = await http.get(Uri.parse(Urls.getRecipesUrl()));
@@ -78,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return ListTile(
           leading: Image.network(meal.thumbnail),
           title: Text(meal.name),
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RecipeDetails(meal))),
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RecipeDetails(meal, preferences))),
         );
       }).toList(),
     );
@@ -88,6 +80,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     meals = fetchMeals();
+    loadPreferences();
+  }
+
+  void loadPreferences() async {
+    preferences = await SharedPreferences.getInstance();
   }
 
   @override

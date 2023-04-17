@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipes/view/Favourites.dart';
 
 class MainMenu extends StatelessWidget {
   @override
@@ -30,7 +31,7 @@ class MainMenu extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.favorite),
                   title: Text('Favourites'),
-                  onTap: () => Navigator.of(context).pop(), // TODO
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Favourites())),
                 ),
               ],
             ),
