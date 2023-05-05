@@ -31,15 +31,15 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Recipes'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key});
 
-  final String title;
+  final String title = 'Recipes';
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      drawer: MainMenu(),
+      drawer: MainMenu(this),
       body: FutureBuilder<List<Meal>>(
               future: meals,
               builder: (context, snapshot) {

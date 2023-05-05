@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:recipes/main.dart';
 import 'package:recipes/view/Favourites.dart';
+import 'package:recipes/view/RecipeDetails.dart';
 
 class MainMenu extends StatelessWidget {
+  final State<dynamic> from;
+
+  MainMenu(this.from);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -26,12 +32,24 @@ class MainMenu extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.home),
                   title: Text('All Recipes'),
-                  onTap: () => Navigator.of(context).pop(),
+                  onTap: () => {
+                    if (from is State<MyHomePage>) {
+                      Navigator.of(context).pop(),
+                    } else {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage()))
+                    }
+                  }
                 ),
                 ListTile(
                   leading: Icon(Icons.favorite),
                   title: Text('Favourites'),
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Favourites())),
+                  onTap: () => {
+                    if (from is State<RecipeDetails>) {
+                      Navigator.of(context).pop()
+                    } else {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Favourites()))
+                    }
+                  },
                 ),
               ],
             ),

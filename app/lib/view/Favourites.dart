@@ -9,13 +9,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Favourites extends StatefulWidget
 {
-  late Future<List<Meal>> favouriteMeals;
-
   @override
   State<Favourites> createState() => FavouritesState();
 }
 
 class FavouritesState extends State<Favourites> {
+  late Future<List<Meal>> favouriteMeals;
   late SharedPreferences preferences;
 
   Future<List<Meal>> fetchMeals() async {
@@ -44,7 +43,12 @@ class FavouritesState extends State<Favourites> {
         return ListTile(
           leading: Image.network(meal.thumbnail),
           title: Text(meal.name),
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RecipeDetails(meal, preferences))),
+          onTap: () => {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => RecipeDetails(meal, preferences)))
+              .then((value) => setState(() {
+                favouriteMeals = fetchMeals();
+              }))
+          }
         );
       }).toList(),
     );
@@ -53,7 +57,7 @@ class FavouritesState extends State<Favourites> {
   @override
   void initState() {
     super.initState();
-    widget.favouriteMeals = fetchMeals();
+    favouriteMeals = fetchMeals();
     loadPreferences();
   }
 
@@ -67,9 +71,9 @@ class FavouritesState extends State<Favourites> {
       appBar: AppBar(
         title: Text('Favourites'),
       ),
-      drawer: MainMenu(),
+      drawer: MainMenu(this),
       body: FutureBuilder<List<Meal>>(
-              future: widget.favouriteMeals,
+              future: favouriteMeals,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return generateListView(context, snapshot);
